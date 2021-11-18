@@ -1,13 +1,20 @@
 package com.example.tasklist
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.databinding.FragmentChangePassBinding
+import android.content.SharedPreferences
+import android.net.wifi.WifiEnterpriseConfig
+import android.widget.Toast
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +31,9 @@ class ChangePass : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreference =
+            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        Toast.makeText(requireActivity(),sharedPreference.getString("STRING_KEY", null),Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateView(
@@ -41,8 +51,46 @@ class ChangePass : Fragment(){
     }
 
     fun goToList() {
-        findNavController().navigate(R.id.action_changePass_to_taskListFragment)
+
+        val sharedPreference =
+            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+
+        if(binding.passwordOld.text.toString().equals(sharedPreference.getString("STRING_KEY", null),true)) {
+            if ((binding.passwordNew.text.toString()).length >= 4){
+                savePass()
+                Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_changePass_to_taskListFragment)
+            }
+            else{
+                Toast.makeText(requireActivity(),"Password too short,it should have at least 4 characters!",Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_changePass_self)
+            }
+
+        }
+        else{
+            Toast.makeText(requireActivity(),"Password is incorrect, try again!",Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_changePass_self)
+        }
     }
 
+
+    private fun savePass(){
+        val insertedText = binding.passwordNew.text.toString()
+
+        val sharedPreference =
+            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.apply{
+            putString("STRING_KEY",insertedText)
+        }.apply()
+    }
+
+
+    private fun loadData(){
+        val sharedPreference =
+            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        val savedString = sharedPreference.getString("STRING_KEY", null)
+
+    }
 
 }

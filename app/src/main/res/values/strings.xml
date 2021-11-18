@@ -22,4 +22,6 @@
     <string name="change_password">Change Password</string>
     <string name="change_the_password">Change the password</string>
     <string name="type_the_note">Type the note</string>
+    <string name="set_the_password">Set the password</string>
+    <string name="you_need_to_set_up_the_password">You need to set up the password!</string>
 </resources>

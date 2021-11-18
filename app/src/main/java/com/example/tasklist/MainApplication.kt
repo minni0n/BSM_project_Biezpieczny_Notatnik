@@ -18,6 +18,5 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val context: Context = MainApplication.applicationContext()
     }
 }

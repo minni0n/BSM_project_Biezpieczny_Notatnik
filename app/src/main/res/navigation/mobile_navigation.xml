@@ -49,5 +49,20 @@
         <action
             android:id="@+id/action_changePass_to_taskListFragment"
             app:destination="@id/taskListFragment" />
+        <action
+            android:id="@+id/action_changePass_self"
+            app:destination="@id/changePass" />
+    </fragment>
+    <fragment
+        android:id="@+id/setPass"
+        android:name="com.example.tasklist.SetPass"
+        android:label="fragment_set_pass"
+        tools:layout="@layout/fragment_set_pass" >
+        <action
+            android:id="@+id/action_setPass_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
+        <action
+            android:id="@+id/action_setPass_self"
+            app:destination="@id/setPass" />
     </fragment>
 </navigation>

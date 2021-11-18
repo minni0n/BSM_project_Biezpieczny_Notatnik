@@ -1,11 +1,13 @@
 package com.example.tasklist
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,10 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.main_activity)
 
+
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         navController = findNavController(R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
     }
+
 
 
 }
