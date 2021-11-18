@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="clickListener"
+            type="com.example.tasklist.ui.adapters.TaskItemClickListener" />
+        <variable
+            name="task"
+            type="com.example.tasklist.data.Task" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkBox_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text='@{task.name + "\n" + task.date}'
+            android:onClick="@{() -> clickListener.chooseTask(task)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="158dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
