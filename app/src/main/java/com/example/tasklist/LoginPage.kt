@@ -31,11 +31,6 @@ class LoginPage : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreference =
-            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        val savedString = sharedPreference.getString("STRING_KEY", null)
-        Toast.makeText(requireActivity(),savedString,Toast.LENGTH_SHORT).show()
-
     }
 
     override fun onCreateView(
