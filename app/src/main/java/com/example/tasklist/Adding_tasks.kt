@@ -50,7 +50,7 @@ class Adding_tasks : Fragment() {
 
         val textTask = binding.editTextName.text.toString()
         val dateTask = simpleDateFormat.format(Date())
-        if (textTask != ""  && dateTask != "") {
+        if (textTask != "") {
             val ttask = Task(textTask, dateTask)
             Database.taskDao.addTask(ttask)
         }

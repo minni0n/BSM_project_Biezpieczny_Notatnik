@@ -64,4 +64,6 @@ class SetPass : Fragment() {
             putString("STRING_KEY", insertedText)
         }.apply()
     }
+
+
 }

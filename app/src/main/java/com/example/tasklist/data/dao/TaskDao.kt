@@ -9,6 +9,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class TaskDao {
+
+
     fun getAllTasks() : ArrayList<Task> {
         return DataSource.zadanie
     }

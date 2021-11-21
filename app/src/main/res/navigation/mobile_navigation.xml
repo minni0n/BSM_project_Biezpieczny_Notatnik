@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_loginPage_self"
             app:destination="@id/loginPage" />
+        <action
+            android:id="@+id/action_loginPage_to_setPass"
+            app:destination="@id/setPass" />
     </fragment>
     <fragment
         android:id="@+id/changePass"

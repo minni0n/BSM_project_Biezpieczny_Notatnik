@@ -31,9 +31,6 @@ class ChangePass : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreference =
-            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        Toast.makeText(requireActivity(),sharedPreference.getString("STRING_KEY", null),Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateView(
@@ -55,7 +52,7 @@ class ChangePass : Fragment(){
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
-        if(binding.passwordOld.text.toString().equals(sharedPreference.getString("STRING_KEY", null),true)) {
+        if(binding.passwordOld.text.toString().equals(sharedPreference.getString("STRING_KEY", null),false)) {
             if ((binding.passwordNew.text.toString()).length >= 4){
                 savePass()
                 Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()

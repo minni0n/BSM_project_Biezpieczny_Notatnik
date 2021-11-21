@@ -28,9 +28,11 @@ class LoginPage : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -39,6 +41,7 @@ class LoginPage : Fragment(){
             inflater, R.layout.fragment_login_page, container, false
         )
 
+        checkIfPassSet()
 
         binding.login = this@LoginPage
         return binding.root
@@ -49,7 +52,7 @@ class LoginPage : Fragment(){
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
-        if(binding.password.text.toString().equals(sharedPreference.getString("STRING_KEY", null),true)){
+        if(binding.password.text.toString().equals(sharedPreference.getString("STRING_KEY", null),false)){
             savePass()
             findNavController().navigate(R.id.action_loginPage_to_taskListFragment)
         }
@@ -69,7 +72,14 @@ class LoginPage : Fragment(){
         editor.apply{
             putString("STRING_KEY",insertedText)
         }.apply()
-        //Toast.makeText(requireActivity(),"Password updated",Toast.LENGTH_SHORT).show()
     }
 
+
+    private fun checkIfPassSet(){
+        val sharedPreference =
+            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        if(sharedPreference.getString("STRING_KEY", null) == null){
+            findNavController().navigate(R.id.action_loginPage_to_setPass)
+        }
+    }
 }
