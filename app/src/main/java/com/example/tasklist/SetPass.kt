@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.databinding.FragmentSetPassBinding
+import java.lang.Exception
+import java.security.MessageDigest
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,8 +45,10 @@ class SetPass : Fragment() {
     }
 
     fun goToList() {
-        if ((binding.password.text.toString()).length >= 4) {
-            savePass()
+        val pass = binding.password.text.toString()
+
+        if (pass.length >= 4) {
+            savePass(pass)
             Toast.makeText(requireActivity(), "Password is set", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_setPass_to_taskListFragment)
         } else {
@@ -54,15 +58,49 @@ class SetPass : Fragment() {
     }
 
 
-    private fun savePass() {
-        val insertedText = binding.password.text.toString()
+    private fun savePass(pass: String) {
+        val password = toMD5Hash(pass)
 
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
         editor.apply {
-            putString("STRING_KEY", insertedText)
+            putString("STRING_KEY", password)
         }.apply()
+    }
+
+    private fun byteArrayToHexString( array: Array<Byte> ): String {
+
+        val result = StringBuilder(array.size * 2)
+
+        for ( byte in array ) {
+
+            val toAppend =
+                String.format("%2X", byte).replace(" ", "0") // hexadecimal
+            result.append(toAppend).append("-")
+        }
+        result.setLength(result.length - 1) // remove last '-'
+
+        return result.toString()
+    }
+
+
+    private fun toMD5Hash( text: String ): String {
+
+        var result = ""
+
+        result = try {
+
+            val md5 = MessageDigest.getInstance("MD5")
+            val md5HashBytes = md5.digest(text.toByteArray()).toTypedArray()
+
+            byteArrayToHexString(md5HashBytes)
+        } catch ( e: Exception ) {
+
+            "error: ${e.message}"
+        }
+
+        return result
     }
 
 

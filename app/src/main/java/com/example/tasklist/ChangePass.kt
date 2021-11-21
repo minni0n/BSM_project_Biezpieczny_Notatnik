@@ -14,6 +14,8 @@ import com.example.tasklist.databinding.FragmentChangePassBinding
 import android.content.SharedPreferences
 import android.net.wifi.WifiEnterpriseConfig
 import android.widget.Toast
+import java.lang.Exception
+import java.security.MessageDigest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -51,10 +53,14 @@ class ChangePass : Fragment(){
 
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        val sharedPass = sharedPreference.getString("STRING_KEY", null)
+        val oldPass = toMD5Hash(binding.passwordOld.text.toString())
+        var newPass = binding.passwordNew.text.toString()
 
-        if(binding.passwordOld.text.toString().equals(sharedPreference.getString("STRING_KEY", null),false)) {
-            if ((binding.passwordNew.text.toString()).length >= 4){
-                savePass()
+        if(oldPass.equals(sharedPass,false)) {
+            if (newPass.length >= 4){
+                newPass = toMD5Hash(newPass)
+                savePass(newPass)
                 Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_changePass_to_taskListFragment)
             }
@@ -71,15 +77,48 @@ class ChangePass : Fragment(){
     }
 
 
-    private fun savePass(){
-        val insertedText = binding.passwordNew.text.toString()
-
+    private fun savePass(pass: String){
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
         editor.apply{
-            putString("STRING_KEY",insertedText)
+            putString("STRING_KEY",pass)
         }.apply()
+    }
+
+
+    private fun byteArrayToHexString( array: Array<Byte> ): String {
+
+        val result = StringBuilder(array.size * 2)
+
+        for ( byte in array ) {
+
+            val toAppend =
+                String.format("%2X", byte).replace(" ", "0") // hexadecimal
+            result.append(toAppend).append("-")
+        }
+        result.setLength(result.length - 1) // remove last '-'
+
+        return result.toString()
+    }
+
+
+    private fun toMD5Hash( text: String ): String {
+
+        var result = ""
+
+        result = try {
+
+            val md5 = MessageDigest.getInstance("MD5")
+            val md5HashBytes = md5.digest(text.toByteArray()).toTypedArray()
+
+            byteArrayToHexString(md5HashBytes)
+        } catch ( e: Exception) {
+
+            "error: ${e.message}"
+        }
+
+        return result
     }
 
 
