@@ -12,6 +12,7 @@ import com.example.tasklist.databinding.FragmentLoginPageBinding
 import android.content.SharedPreferences
 import android.widget.Toast
 import java.lang.Exception
+import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.*
 
@@ -79,38 +80,9 @@ class LoginPage : Fragment(){
         }
     }
 
-    private fun byteArrayToHexString( array: Array<Byte> ): String {
-
-        val result = StringBuilder(array.size * 2)
-
-        for ( byte in array ) {
-
-            val toAppend =
-                String.format("%2X", byte).replace(" ", "0") // hexadecimal
-            result.append(toAppend).append("-")
-        }
-        result.setLength(result.length - 1) // remove last '-'
-
-        return result.toString()
-    }
-
-
-    private fun toMD5Hash( text: String ): String {
-
-        var result = ""
-
-        result = try {
-
-            val md5 = MessageDigest.getInstance("MD5")
-            val md5HashBytes = md5.digest(text.toByteArray()).toTypedArray()
-
-            byteArrayToHexString(md5HashBytes)
-        } catch ( e: Exception) {
-
-            "error: ${e.message}"
-        }
-
-        return result
+    private fun toMD5Hash(input:String): String {
+        val md = MessageDigest.getInstance("MD5")
+        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
 }
