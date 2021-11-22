@@ -59,7 +59,7 @@ class SetPass : Fragment() {
 
 
     private fun savePass(pass: String) {
-        val password = toMD5Hash(pass)
+        val password = hashString(pass)
 
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
@@ -69,9 +69,11 @@ class SetPass : Fragment() {
         }.apply()
     }
 
-    private fun toMD5Hash(input:String): String {
-        val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+    private fun hashString(input: String): String {
+        return MessageDigest
+            .getInstance("SHA-256")
+            .digest(input.toByteArray())
+            .fold("", { str, it -> str + "%02x".format(it) })
     }
 
 }

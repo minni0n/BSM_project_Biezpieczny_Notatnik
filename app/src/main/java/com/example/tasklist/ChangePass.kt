@@ -34,6 +34,11 @@ class ChangePass : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        val sharedPreference =
+//            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+//        val sharedPass = sharedPreference.getString("STRING_KEY", null)
+//        Toast.makeText(requireActivity(),sharedPass,Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
@@ -54,12 +59,12 @@ class ChangePass : Fragment(){
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
         val sharedPass = sharedPreference.getString("STRING_KEY", null)
-        val oldPass = toMD5Hash(binding.passwordOld.text.toString())
+        val oldPass = hashString(binding.passwordOld.text.toString())
         var newPass = binding.passwordNew.text.toString()
 
         if(oldPass.equals(sharedPass,false)) {
             if (newPass.length >= 4){
-                newPass = toMD5Hash(newPass)
+                newPass = hashString(newPass)
                 savePass(newPass)
                 Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_changePass_to_taskListFragment)
@@ -87,9 +92,11 @@ class ChangePass : Fragment(){
     }
 
 
-    private fun toMD5Hash(input:String): String {
-        val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+    private fun hashString(input: String): String {
+        return MessageDigest
+            .getInstance("SHA-256")
+            .digest(input.toByteArray())
+            .fold("", { str, it -> str + "%02x".format(it) })
     }
 
 

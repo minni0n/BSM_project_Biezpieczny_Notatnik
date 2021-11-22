@@ -54,7 +54,7 @@ class LoginPage : Fragment(){
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
-        val insertedText = toMD5Hash(binding.password.text.toString())
+        val insertedText = hashString(binding.password.text.toString())
 
 
         if(insertedText.equals(sharedPreference.getString("STRING_KEY", null),false)){
@@ -75,9 +75,11 @@ class LoginPage : Fragment(){
         }
     }
 
-    private fun toMD5Hash(input:String): String {
-        val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+    private fun hashString(input: String): String {
+        return MessageDigest
+            .getInstance("SHA-256")
+            .digest(input.toByteArray())
+            .fold("", { str, it -> str + "%02x".format(it) })
     }
 
 }
