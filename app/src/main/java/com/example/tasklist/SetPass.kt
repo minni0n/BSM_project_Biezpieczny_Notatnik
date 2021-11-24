@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.databinding.FragmentSetPassBinding
+import java.io.ByteArrayOutputStream
+import java.io.ObjectOutputStream
 import java.lang.Exception
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -59,7 +61,9 @@ class SetPass : Fragment() {
 
 
     private fun savePass(pass: String) {
-        val password = hashString(pass)
+
+        val hash = HashString()
+        val password = hash.hashString(pass)
 
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
@@ -67,13 +71,6 @@ class SetPass : Fragment() {
         editor.apply {
             putString("STRING_KEY", password)
         }.apply()
-    }
-
-    private fun hashString(input: String): String {
-        return MessageDigest
-            .getInstance("SHA-256")
-            .digest(input.toByteArray())
-            .fold("", { str, it -> str + "%02x".format(it) })
     }
 
 }

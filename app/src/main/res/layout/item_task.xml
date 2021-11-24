@@ -10,6 +10,11 @@
         <variable
             name="task"
             type="com.example.tasklist.data.Task" />
+        <variable
+            name="crypto"
+            type="com.example.tasklist.ChCrypto" />
+
+
 
     </data>
 

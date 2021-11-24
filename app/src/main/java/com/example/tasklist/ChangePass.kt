@@ -1,22 +1,15 @@
 package com.example.tasklist
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.databinding.FragmentChangePassBinding
-import android.content.SharedPreferences
-import android.net.wifi.WifiEnterpriseConfig
-import android.widget.Toast
-import java.lang.Exception
-import java.math.BigInteger
-import java.security.MessageDigest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,11 +27,6 @@ class ChangePass : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-//        val sharedPreference =
-//            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-//        val sharedPass = sharedPreference.getString("STRING_KEY", null)
-//        Toast.makeText(requireActivity(),sharedPass,Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
@@ -55,16 +43,16 @@ class ChangePass : Fragment(){
     }
 
     fun goToList() {
-
+        val hash = HashString()
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
         val sharedPass = sharedPreference.getString("STRING_KEY", null)
-        val oldPass = hashString(binding.passwordOld.text.toString())
+        val oldPass = hash.hashString(binding.passwordOld.text.toString())
         var newPass = binding.passwordNew.text.toString()
 
         if(oldPass.equals(sharedPass,false)) {
             if (newPass.length >= 4){
-                newPass = hashString(newPass)
+                newPass = hash.hashString(newPass)
                 savePass(newPass)
                 Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_changePass_to_taskListFragment)
@@ -89,22 +77,6 @@ class ChangePass : Fragment(){
         editor.apply{
             putString("STRING_KEY",pass)
         }.apply()
-    }
-
-
-    private fun hashString(input: String): String {
-        return MessageDigest
-            .getInstance("SHA-256")
-            .digest(input.toByteArray())
-            .fold("", { str, it -> str + "%02x".format(it) })
-    }
-
-
-    private fun loadData(){
-        val sharedPreference =
-            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        val savedString = sharedPreference.getString("STRING_KEY", null)
-
     }
 
 }

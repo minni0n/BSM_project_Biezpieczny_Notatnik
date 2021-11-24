@@ -10,6 +10,7 @@ import com.example.tasklist.R
 import com.example.tasklist.data.Task
 import com.example.tasklist.databinding.ItemTaskBinding
 
+
 class TaskAdapter internal constructor(
     private val nListener : TaskItemClickListener
 ): ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallback()) {
@@ -53,7 +54,7 @@ interface TaskItemClickListener {
 
 private class TaskDiffCallback : DiffUtil.ItemCallback<Task> () {
     override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
-        return oldItem.name == newItem.name
+        return oldItem.name.contentEquals(newItem.name)
     }
 
     override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {

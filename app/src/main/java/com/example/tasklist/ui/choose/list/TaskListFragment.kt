@@ -1,5 +1,6 @@
 package com.example.tasklist.ui.choose.list
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,6 +50,7 @@ class TaskListFragment : Fragment(), TaskItemClickListener {
 
         return binding.root
     }
+    @SuppressLint("NotifyDataSetChanged")
     private fun subscribeUi(newAdapter: TaskAdapter, binding: FragmentTaskListBinding) {
         binding.recyclerView.adapter = newAdapter
         newAdapter.notifyDataSetChanged()

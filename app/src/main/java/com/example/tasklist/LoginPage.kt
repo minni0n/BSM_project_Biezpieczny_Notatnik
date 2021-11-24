@@ -5,15 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.tasklist.databinding.FragmentLoginPageBinding
-import android.content.SharedPreferences
-import android.widget.Toast
-import java.lang.Exception
-import java.math.BigInteger
-import java.security.MessageDigest
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,7 +50,8 @@ class LoginPage : Fragment(){
         val sharedPreference =
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
 
-        val insertedText = hashString(binding.password.text.toString())
+        val hash = HashString()
+        val insertedText = hash.hashString(binding.password.text.toString())
 
 
         if(insertedText.equals(sharedPreference.getString("STRING_KEY", null),false)){
@@ -73,13 +70,6 @@ class LoginPage : Fragment(){
         if(sharedPreference.getString("STRING_KEY", null) == null){
             findNavController().navigate(R.id.action_loginPage_to_setPass)
         }
-    }
-
-    private fun hashString(input: String): String {
-        return MessageDigest
-            .getInstance("SHA-256")
-            .digest(input.toByteArray())
-            .fold("", { str, it -> str + "%02x".format(it) })
     }
 
 }

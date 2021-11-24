@@ -1,9 +1,11 @@
 package com.example.tasklist
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,7 @@ import com.example.tasklist.data.Task
 import com.example.tasklist.databinding.FragmentAddingTasksBinding
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +27,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Adding_tasks : Fragment() {
+
 
     private lateinit var binding: FragmentAddingTasksBinding
 
@@ -44,18 +48,20 @@ class Adding_tasks : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun goToTasks() {
-        var pattern = "dd-MM-yyyy hh:mm"
-        var simpleDateFormat = SimpleDateFormat(pattern, Locale("pl", "PL"))
-
+        val pattern = "dd-MM-yyyy hh:mm"
+        val simpleDateFormat = SimpleDateFormat(pattern, Locale("pl", "PL"))
         val textTask = binding.editTextName.text.toString()
         val dateTask = simpleDateFormat.format(Date())
         if (textTask != "") {
-            val ttask = Task(textTask, dateTask)
-            Database.taskDao.addTask(ttask)
+            val crypting = ChCrypto
+            val taskCrypred = crypting.aesEncrypt(textTask)
+            val taskToAdd = Task(taskCrypred, dateTask)
+
+            Database.taskDao.addTask(taskToAdd)
         }
         findNavController().navigate(R.id.action_adding_tasks_to_taskListFragment)
     }
-
 
 }
