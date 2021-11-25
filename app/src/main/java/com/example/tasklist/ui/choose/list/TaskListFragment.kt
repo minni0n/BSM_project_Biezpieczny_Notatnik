@@ -65,23 +65,15 @@ class TaskListFragment : Fragment(), TaskItemClickListener {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun chooseTask(task: Task) {
+    override fun chooseTask(task: Task): String {
         val crypting = ChCrypto
         val taskCrypred = crypting.aesDecrypt(task.name)
-        val taskToast = Toast.makeText(activity, "Zostało wybrane zadanie $taskCrypred", Toast.LENGTH_LONG)
-        taskToast.show()
+//        val taskToast = Toast.makeText(activity, "Zostało wybrane zadanie $taskCrypred", Toast.LENGTH_LONG)
+//        taskToast.show()
+        return  taskCrypred
         // val taskToast = Toast.makeText(activity, "Zostało wybrane zadanie ${task.name}", Toast.LENGTH_LONG)
     }
 
-   @SuppressLint("ShowToast")
-   @RequiresApi(Build.VERSION_CODES.O)
-   fun decryptTasks(task: Task): String {
-        val crypting = ChCrypto
-        val taskDeCrypred = crypting.aesDecrypt(task.name)
-        val taskToast = Toast.makeText(activity,taskDeCrypred, Toast.LENGTH_LONG)
-        taskToast.show()
-        return taskDeCrypred
-    }
 
     fun addTask(){
         findNavController().navigate(R.id.action_taskListFragment_to_adding_tasks)

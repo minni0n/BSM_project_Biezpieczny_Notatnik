@@ -1,11 +1,14 @@
 package com.example.tasklist.ui.adapters
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tasklist.ChCrypto
 import com.example.tasklist.R
 import com.example.tasklist.data.Task
 import com.example.tasklist.databinding.ItemTaskBinding
@@ -49,7 +52,12 @@ class TaskAdapter internal constructor(
 }
 
 interface TaskItemClickListener {
-    fun chooseTask(task: Task)
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun chooseTask(task: Task): String {
+        val crypting = ChCrypto
+        val taskCrypred = crypting.aesDecrypt(task.name)
+        return taskCrypred
+    }
 }
 
 private class TaskDiffCallback : DiffUtil.ItemCallback<Task> () {

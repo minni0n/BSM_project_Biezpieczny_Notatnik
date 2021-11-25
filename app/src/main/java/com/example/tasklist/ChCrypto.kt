@@ -4,6 +4,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.util.*
 import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
@@ -19,8 +21,14 @@ private object AES256{
     private val encorder = Base64.getEncoder()
     @RequiresApi(Build.VERSION_CODES.O)
     private val decorder = Base64.getDecoder()
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun cipher(opmode:Int): Cipher {
         val secretKey = "H+MbQeThWmZq4t7w!z%C&F)J@NcRfUjX"
+//        val keygen = KeyGenerator.getInstance("AES")
+//        keygen.init(256)
+//        val key: SecretKey = keygen.generateKey()
+//        val secretKey = key.toString()
+
         if(secretKey.length != 32) throw RuntimeException("SecretKey length is not 32 chars")
         val c = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val sk = SecretKeySpec(secretKey.toByteArray(Charsets.UTF_8), "AES")

@@ -48,24 +48,32 @@ class ChangePass : Fragment(){
             requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
         val sharedPass = sharedPreference.getString("STRING_KEY", null)
         val oldPass = hash.hashString(binding.passwordOld.text.toString())
-        var newPass = binding.passwordNew.text.toString()
+        val newPass = binding.passwordNew.text.toString()
+        val newPassHash = hash.hashString(newPass)
 
         if(oldPass.equals(sharedPass,false)) {
-            if (newPass.length >= 4){
-                newPass = hash.hashString(newPass)
-                savePass(newPass)
-                Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_changePass_to_taskListFragment)
-            }
-            else{
-                Toast.makeText(requireActivity(),"Password too short,it should have at least 4 characters!",Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_changePass_self)
+            when {
+                newPassHash.equals(sharedPass,false) -> {
+                    Toast.makeText( requireActivity(),
+                        "Password cannot be similar to the previous password!",
+                        Toast.LENGTH_SHORT).show()
+                    //findNavController().navigate(R.id.action_changePass_self)
+                }
+                newPass.length >= 4 -> {
+                    savePass(newPassHash)
+                    Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_changePass_to_taskListFragment)
+                }
+                else -> {
+                    Toast.makeText(requireActivity(),"Password too short,it should have at least 4 characters!",Toast.LENGTH_SHORT).show()
+                    //findNavController().navigate(R.id.action_changePass_self)
+                }
             }
 
         }
         else{
             Toast.makeText(requireActivity(),"Password is incorrect, try again!",Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_changePass_self)
+            //findNavController().navigate(R.id.action_changePass_self)
         }
     }
 
