@@ -13,6 +13,10 @@
         <variable
             name="crypto"
             type="com.example.tasklist.ChCrypto" />
+        <variable
+            name="tlf"
+            type="com.example.tasklist.ui.choose.list.TaskListFragment" />
+
 
 
 
@@ -26,7 +30,7 @@
             android:id="@+id/checkBox_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text='@{task.name + "\n" + task.date}'
+            android:text='@{tlf.decryptTasks(task) + "\n" + task.date}'
             android:onClick="@{() -> clickListener.chooseTask(task)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -52,7 +52,7 @@ class TaskDao {
         DataSource.zadanie.addAll(readedData)
     }
 
-    private fun loadListFromSharedPreferneces(
+     fun loadListFromSharedPreferneces(
         context: Context,
         sharedPreferencesTag: String
     ): List<Task> {
