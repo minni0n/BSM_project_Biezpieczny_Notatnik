@@ -34,6 +34,7 @@ class Adding_tasks : Fragment() {
     private lateinit var binding: FragmentAddingTasksBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
     }
 
@@ -56,6 +57,7 @@ class Adding_tasks : Fragment() {
         val simpleDateFormat = SimpleDateFormat(pattern, Locale("pl", "PL"))
         val textTask = binding.editTextName.text.toString()
         val dateTask = simpleDateFormat.format(Date())
+
         if (textTask != "") {
             val crypting = ChCrypto
             val taskCrypred = crypting.aesEncrypt(textTask)

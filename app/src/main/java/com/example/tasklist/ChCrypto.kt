@@ -1,13 +1,13 @@
 package com.example.tasklist
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.util.*
 import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+
 
 object ChCrypto{
     @RequiresApi(Build.VERSION_CODES.O)
@@ -21,13 +21,14 @@ private object AES256{
     private val encorder = Base64.getEncoder()
     @RequiresApi(Build.VERSION_CODES.O)
     private val decorder = Base64.getDecoder()
+    @SuppressLint("RestrictedApi")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun cipher(opmode:Int): Cipher {
+
         val secretKey = "H+MbQeThWmZq4t7w!z%C&F)J@NcRfUjX"
-//        val keygen = KeyGenerator.getInstance("AES")
-//        keygen.init(256)
-//        val key: SecretKey = keygen.generateKey()
-//        val secretKey = key.toString()
+
+        val key = SetPass()
+        //val secretKey = key.getKey()
 
         if(secretKey.length != 32) throw RuntimeException("SecretKey length is not 32 chars")
         val c = Cipher.getInstance("AES/CBC/PKCS5Padding")
@@ -38,7 +39,7 @@ private object AES256{
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun encrypt(str:String):String{
+    fun encrypt(str: String):String{
         val encrypted = cipher(Cipher.ENCRYPT_MODE).doFinal(str.toByteArray(Charsets.UTF_8))
         return String(encorder.encode(encrypted))
     }
@@ -48,6 +49,4 @@ private object AES256{
         val byteStr = decorder.decode(str.toByteArray(Charsets.UTF_8))
         return String(cipher(Cipher.DECRYPT_MODE).doFinal(byteStr))
     }
-
-
 }

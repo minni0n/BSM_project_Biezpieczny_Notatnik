@@ -51,6 +51,8 @@ class ChangePass : Fragment(){
         val newPass = binding.passwordNew.text.toString()
         val newPassHash = hash.hashString(newPass)
 
+
+
         if(oldPass.equals(sharedPass,false)) {
             when {
                 newPassHash.equals(sharedPass,false) -> {
