@@ -1,21 +1,22 @@
 package com.example.tasklist
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.tasklist.data.DataSource
 import com.example.tasklist.data.Database
 import com.example.tasklist.data.Task
 import com.example.tasklist.databinding.FragmentAddingTasksBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,13 +60,31 @@ class Adding_tasks : Fragment() {
         val dateTask = simpleDateFormat.format(Date())
 
         if (textTask != "") {
-            val crypting = ChCrypto
-            val taskCrypred = crypting.aesEncrypt(textTask)
+            val secretKey = getSecretKey()
+            val crypting = Cryption()
+            val iv = IvParameterSpec(ByteArray(16))
+            val taskCrypred = crypting.encrypt(textTask, secretKey, iv)
             val taskToAdd = Task(taskCrypred, dateTask)
 
             Database.taskDao.addTask(taskToAdd)
         }
         findNavController().navigate(R.id.action_adding_tasks_to_taskListFragment)
+    }
+
+    private fun getPass(): String? {
+        val sharedPreference =
+            requireActivity().getSharedPreferences("KEY", Context.MODE_PRIVATE)
+        val pass = sharedPreference.getString("KEY_SECRET", null)
+        return pass
+    }
+
+    private fun getSecretKey(): SecretKeySpec{
+//        val  sharedPreference =
+//            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+//        val pass = sharedPreference.getString("STRING_KEY", "pass")
+//        Toast.makeText(requireActivity(),pass.toString(),Toast.LENGTH_LONG).show()
+        val secretKey = SecretKeySpec(getPass()?.removeRange(0,32)?.toByteArray(), "AES")
+        return secretKey
     }
 
 }

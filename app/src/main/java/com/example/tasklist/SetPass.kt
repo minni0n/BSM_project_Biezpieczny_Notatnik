@@ -1,5 +1,6 @@
 package com.example.tasklist
 
+import android.R.attr
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,6 +19,13 @@ import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
+import android.R.attr.key
+import javax.crypto.Cipher
+import android.preference.PreferenceManager
+
+import android.content.SharedPreferences
+import javax.crypto.spec.SecretKeySpec
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +62,7 @@ class SetPass : Fragment() {
 
         if (pass.length >= 4) {
             savePass(pass)
+            saveHashForKey(pass)
             //Toast.makeText(requireActivity(), "Password is set", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_setPass_to_taskListFragment)
         } else {
@@ -64,7 +73,6 @@ class SetPass : Fragment() {
 
 
     private fun savePass(pass: String) {
-        saveSecretKey()
         val hash = HashString()
         val password = hash.hashString(pass)
         val sharedPreference =
@@ -75,25 +83,14 @@ class SetPass : Fragment() {
         }.apply()
     }
 
-
-    private fun saveSecretKey(){
-
-        val secretKey = "H+MbQeThWmZq4t7w!z%C&F)J@NcRfUjX"
-
+    private fun saveHashForKey(pass: String) {
+        val hash = HashString()
+        val password = hash.hashString(pass)
         val sharedPreference =
             requireActivity().getSharedPreferences("KEY", Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
-        editor.putString("secretKey", secretKey).apply()
-        Toast.makeText(requireActivity(),getKey(),Toast.LENGTH_LONG).show()
-    }
-
-
-
-    fun getKey(): String{
-        val sharedPreference =
-            requireActivity().getSharedPreferences("KEY", Context.MODE_PRIVATE)
-        val sharedPass = sharedPreference.getString("secretKey", "DEFAULT")
-        val secretKey = sharedPass.toString()
-        return secretKey
+        editor.apply {
+            putString("KEY_SECRET", password)
+        }.apply()
     }
 }

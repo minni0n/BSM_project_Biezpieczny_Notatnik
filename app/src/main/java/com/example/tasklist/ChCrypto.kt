@@ -24,9 +24,7 @@ private object AES256{
     @SuppressLint("RestrictedApi")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun cipher(opmode:Int): Cipher {
-
         val secretKey = "H+MbQeThWmZq4t7w!z%C&F)J@NcRfUjX"
-
         val key = SetPass()
         //val secretKey = key.getKey()
 

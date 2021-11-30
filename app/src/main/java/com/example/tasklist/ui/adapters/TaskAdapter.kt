@@ -1,5 +1,6 @@
 package com.example.tasklist.ui.adapters
 
+import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,10 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tasklist.ChCrypto
+import com.example.tasklist.Adding_tasks
+import com.example.tasklist.Cryption
+import com.example.tasklist.LoginPage
 import com.example.tasklist.R
 import com.example.tasklist.data.Task
 import com.example.tasklist.databinding.ItemTaskBinding
+import com.example.tasklist.ui.choose.list.TaskListFragment
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 
 class TaskAdapter internal constructor(
@@ -54,9 +60,11 @@ class TaskAdapter internal constructor(
 interface TaskItemClickListener {
     @RequiresApi(Build.VERSION_CODES.O)
     fun chooseTask(task: Task): String {
-        val crypting = ChCrypto
-        val taskCrypred = crypting.aesDecrypt(task.name)
-        return taskCrypred
+        val iv = IvParameterSpec(ByteArray(16))
+        val secretKey = SecretKeySpec(TaskListFragment().getPass()?.removeRange(0,32)?.toByteArray(), "AES")
+        val crypting = Cryption()
+
+        return crypting.decrypt(task.name, secretKey, iv)
     }
 }
 

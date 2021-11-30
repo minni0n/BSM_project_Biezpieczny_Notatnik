@@ -44,22 +44,18 @@ class ChangePass : Fragment(){
 
     fun goToList() {
         val hash = HashString()
-        val sharedPreference =
-            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        val sharedPass = sharedPreference.getString("STRING_KEY", null)
+
         val oldPass = hash.hashString(binding.passwordOld.text.toString())
         val newPass = binding.passwordNew.text.toString()
         val newPassHash = hash.hashString(newPass)
 
 
-
-        if(oldPass.equals(sharedPass,false)) {
+        if(oldPass.equals(getPass(),false)) {
             when {
-                newPassHash.equals(sharedPass,false) -> {
+                newPassHash.equals(getPass(),false) -> {
                     Toast.makeText( requireActivity(),
                         "Password cannot be similar to the previous password!",
                         Toast.LENGTH_SHORT).show()
-                    //findNavController().navigate(R.id.action_changePass_self)
                 }
                 newPass.length >= 4 -> {
                     savePass(newPassHash)
@@ -68,14 +64,12 @@ class ChangePass : Fragment(){
                 }
                 else -> {
                     Toast.makeText(requireActivity(),"Password too short,it should have at least 4 characters!",Toast.LENGTH_SHORT).show()
-                    //findNavController().navigate(R.id.action_changePass_self)
                 }
             }
 
         }
         else{
             Toast.makeText(requireActivity(),"Password is incorrect, try again!",Toast.LENGTH_SHORT).show()
-            //findNavController().navigate(R.id.action_changePass_self)
         }
     }
 
@@ -87,6 +81,13 @@ class ChangePass : Fragment(){
         editor.apply{
             putString("STRING_KEY",pass)
         }.apply()
+    }
+
+    fun getPass(): String? {
+        val sharedPreference =
+            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        val pass = sharedPreference.getString("STRING_KEY", null)
+        return pass
     }
 
 }
