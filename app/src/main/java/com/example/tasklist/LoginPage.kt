@@ -3,6 +3,7 @@ package com.example.tasklist
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.SystemClock.sleep
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,17 +30,14 @@ private const val ARG_PARAM2 = "param2"
  */
 class LoginPage : Fragment(){
     private lateinit var binding: FragmentLoginPageBinding
-    private var counter: Int = 0
+    private var counter: Int = 1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_login_page, container, false
@@ -63,17 +61,22 @@ class LoginPage : Fragment(){
             findNavController().navigate(R.id.action_loginPage_to_taskListFragment)
         }
         else{
-            if (counter<=5){
-                counter += 1
-                Toast.makeText(requireActivity(),"Your password is incorrect. Try again!",Toast.LENGTH_SHORT).show()
-                //Toast.makeText(requireActivity(),counter,Toast.LENGTH_SHORT).show()
-                //findNavController().navigate(R.id.action_loginPage_self)
+            if (counter%5 == 0 && counter != 0){
+                counter = 1
+                Toast.makeText(requireActivity(),"You have been timed out for 30 second!",Toast.LENGTH_LONG).show()
+                //toSleep()
             }
             else{
-                Toast.makeText(requireActivity(),"You wrote incorrect password 5 times in a row. You bhave been timed out for 30 second!",Toast.LENGTH_LONG).show()
+                counter++
+                Toast.makeText(requireActivity(),"Your password is incorrect. Try again!",Toast.LENGTH_SHORT).show()
             }
 
+
         }
+    }
+
+    private fun toSleep(){
+        sleep(5000)
     }
 
     fun getPass(): String? {

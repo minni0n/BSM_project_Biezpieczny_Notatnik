@@ -25,10 +25,6 @@ private const val ARG_PARAM2 = "param2"
 class ChangePass : Fragment(){
     private lateinit var binding: FragmentChangePassBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,13 +53,13 @@ class ChangePass : Fragment(){
                         "Password cannot be similar to the previous password!",
                         Toast.LENGTH_SHORT).show()
                 }
-                newPass.length >= 4 -> {
+                newPass.length >= 8 -> {
                     savePass(newPassHash)
                     Toast.makeText(requireActivity(),"Password updated!",Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_changePass_to_taskListFragment)
                 }
                 else -> {
-                    Toast.makeText(requireActivity(),"Password too short,it should have at least 4 characters!",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(),"Password too short,it should have at least 8 characters!",Toast.LENGTH_SHORT).show()
                 }
             }
 

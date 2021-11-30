@@ -60,13 +60,13 @@ class SetPass : Fragment() {
     fun goToList() {
         val pass = binding.password.text.toString()
 
-        if (pass.length >= 4) {
+        if (pass.length >= 8) {
             savePass(pass)
             saveHashForKey(pass)
             //Toast.makeText(requireActivity(), "Password is set", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_setPass_to_taskListFragment)
         } else {
-            Toast.makeText(requireActivity(),"Password too short,it should have at least 4 characters!",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(),"Password too short,it should have at least 8 characters!",Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_setPass_self)
         }
     }

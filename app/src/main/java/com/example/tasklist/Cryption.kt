@@ -26,9 +26,4 @@ class Cryption {
         val cipherText = cipher.doFinal(inputText.toByteArray())
         return Base64.getEncoder().encodeToString(cipherText)
     }
-
-//    val inputText = "abcdefghigklmnopqrstuvwxyz0123456789"
-//    val algorithm = "AES/CBC/PKCS5Padding"
-//    val key = SecretKeySpec("1234567890123456".toByteArray(), "AES")
-//    val iv = IvParameterSpec(ByteArray(16))
 }

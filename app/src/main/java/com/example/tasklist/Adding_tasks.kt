@@ -78,13 +78,8 @@ class Adding_tasks : Fragment() {
         return pass
     }
 
-    private fun getSecretKey(): SecretKeySpec{
-//        val  sharedPreference =
-//            requireActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-//        val pass = sharedPreference.getString("STRING_KEY", "pass")
-//        Toast.makeText(requireActivity(),pass.toString(),Toast.LENGTH_LONG).show()
-        val secretKey = SecretKeySpec(getPass()?.removeRange(0,32)?.toByteArray(), "AES")
-        return secretKey
+    private fun getSecretKey(): SecretKeySpec {
+        return SecretKeySpec(getPass()?.removeRange(0, 32)?.toByteArray(), "AES")
     }
 
 }
